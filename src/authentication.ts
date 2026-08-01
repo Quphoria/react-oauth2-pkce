@@ -1,6 +1,7 @@
 import { postWithXForm } from './httpUtils'
 import { generateCodeChallenge, generateRandomString } from './pkceUtils'
 import { calculatePopupPosition } from './popupUtils'
+import { getStorageImplementation } from './storageUtils'
 import type {
   TInternalConfig,
   TLoginMethod,
@@ -20,7 +21,7 @@ export async function redirectToLogin(
   additionalParameters?: TPrimitiveRecord,
   method: TLoginMethod = 'redirect'
 ): Promise<void> {
-  const storage = config.storage === 'session' ? sessionStorage : localStorage
+  const storage = getStorageImplementation(config.storage)
   const navigationMethod = method === 'replace' ? 'replace' : 'assign'
 
   // Create and store a random string in storage, used as the 'code_verifier'
@@ -95,7 +96,7 @@ function postTokenRequest(
 }
 
 export const fetchTokens = (config: TInternalConfig): Promise<TTokenResponse> => {
-  const storage = config.storage === 'session' ? sessionStorage : localStorage
+  const storage = getStorageImplementation(config.storage)
   /*
     The browser has been redirected from the authentication endpoint with
     a 'code' url parameter.
@@ -170,7 +171,7 @@ export function redirectToLogout(
 }
 
 export function validateState(urlParams: URLSearchParams, storageType: TInternalConfig['storage']) {
-  const storage = storageType === 'session' ? sessionStorage : localStorage
+  const storage = getStorageImplementation(storageType)
   const receivedState = urlParams.get('state')
   const loadedState = storage.getItem(stateStorageKey)
   if (receivedState !== loadedState) {
