@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { getStorageImplementation } from './storageUtils'
 
 export function useBrowserStorage<T>(key: string, initialValue: T, type: 'session' | 'local'): [T, (v: T) => void] {
-  const storage = getStorageImplementation(type);
+  const storage = getStorageImplementation(type)
 
   const [storedValue, setStoredValue] = useState<T>(() => {
     const item = storage.getItem(key)

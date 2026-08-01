@@ -9,17 +9,17 @@ class SSRStorage implements Storage {
 
   clear() {}
 
-  getItem(key: string): string | null {
+  getItem(_key: string): string | null {
     return null
   }
 
-  key(index: number): string | null {
+  key(_index: number): string | null {
     return null
   }
 
-  removeItem(key: string): void {}
+  removeItem(_key: string): void {}
 
-  setItem(key: string, value: string): void {}
+  setItem(_key: string, _value: string): void {}
 }
 
 export function getStorageImplementation(type: 'session' | 'local'): Storage {
